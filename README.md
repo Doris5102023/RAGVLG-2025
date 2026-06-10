@@ -1,6 +1,22 @@
 # RAGVLG
+
+# Table of Contents
+1. [Overview](#overview)
+2. [Repository Structure](#repository-structure)
+3. [Dataset](#dataset)
+4. [Environment Requirements](#environment-requirements)
+5. [RAG Framework Deployment](#rag-framework-deployment)
+6. [Main Experimental Workflow](#main-experimental-workflow)
+   - 6.1 [Dataset Construction](#1-dataset-construction)
+   - 6.2 [Visual Grounding Experiment](#2-visual-grounding-experiment)
+   - 6.3 [Multi-indicator Calculation](#3-multi-indicator-calculation)
+   - 6.4 [Environmental Risk Assessment](#4-Environmental-risk-assessment)
+   - 6.5 [Risk Clustering & Spatial Analysis](#5-risk-clustering--spatial-analysis)
+7. [Output Files Description](#output-files-description)
+8. [Notes](#notes)
+
 ## Overview
-This work proposes **RAGVLG**, a framework that integrates Retrieval-Augmented Generation (RAG) and Vision-Language Models (VLMs). It targets industrial land recognition, ecological risk evaluation, risk grade clustering and spatial correlation analysis based on remote sensing imagery. Experiments are carried out on remote sensing datasets covering **Shenzhen and Hong Kong**.
+This work proposes **RAGVLG**, a framework that integrates Retrieval-Augmented Generation (RAG) and Vision-Language Models (VLMs). It targets industrial land recognition, Environmental risk evaluation, risk grade clustering and spatial correlation analysis based on remote sensing imagery. Experiments are carried out on remote sensing datasets covering **Shenzhen and Hong Kong**.
 
 All original remote sensing data, annotated labels and intermediate files are hosted on Google Drive.
 
@@ -29,7 +45,7 @@ All original remote sensing data, annotated labels and intermediate files are ho
 │ ├── geobbox.py # Extract bbox coordinates of detected industrial land patches
 │ ├── geoprocessor.py # Batch crop LST & NDVI images using gdalwarp
 │ ├── lstndvi.py # Calculate average LST and NDVI for each bbox region
-│ ├── ass.py # Ecological risk assessment for industrial land
+│ ├── ass.py # Environmental risk assessment for industrial land
 │ ├── kmeans.py # K-Means clustering to divide 5 risk levels
 │ ├── lisa_analysis.py # LISA spatial correlation analysis for risk distribution
 │ └── XXX_F1.py # Calculate F1-score for visual grounding evaluation
@@ -65,19 +81,19 @@ We adopt Qwen2.5-72B as the main large vision-language model. Two types of promp
 2. Extract bounding box coordinates of detected industrial land areas.
 3. Use GDAL tools to batch crop corresponding LST (Land Surface Temperature) and NDVI (Normalized Difference Vegetation Index) regions, then compute the average value of LST and NDVI for each industrial land parcel.
 
-### 4. Ecological Risk Assessment
-Combining LST and NDVI indicators, we calculate vegetation coverage ratio, industrial area proportion, temperature excess and vegetation gap between industrial parcels and their surrounding buffer zones. A weighted scoring strategy is applied to evaluate the ecological risk of each industrial land.
+### 4. Environmental Risk Assessment
+Combining LST and NDVI indicators, we calculate vegetation coverage ratio, industrial area proportion, temperature excess and vegetation gap between industrial parcels and their surrounding buffer zones. A weighted scoring strategy is applied to evaluate the Environmental risk of each industrial land.
 
 ### 5. Risk Clustering & Spatial Analysis
 1. K-Means algorithm is used to divide all industrial lands into **five risk levels**.
-2. Conduct **LISA (Local Indicators of Spatial Association)** analysis to explore spatial agglomeration and correlation characteristics of ecological risks across Shenzhen and Hong Kong.
+2. Conduct **LISA (Local Indicators of Spatial Association)** analysis to explore spatial agglomeration and correlation characteristics of Environmental risks across Shenzhen and Hong Kong.
 3. Open the exported GeoJSON and LISA result files with QGIS, sort data by priority, and view regional risk distribution and spatial clustering patterns with differentiated color rendering.
 
 ## Output Files Description
 1. Detection results: Cropped industrial land images and JSON files recording bounding box coordinates.
 2. Statistical results: Calculated mean LST, mean NDVI and comprehensive risk scores.
 3. Clustering results: Risk classification tables and GeoJSON files for spatial mapping.
-4. LISA analysis results: Spatial correlation reports, clustering distribution files and visualization data of ecological risks.
+4. LISA analysis results: Spatial correlation reports, clustering distribution files and visualization data of Environmental risks.
 
 ## Notes
 1. Raw remote sensing data is large-sized and not stored in this repository. Please download datasets from the provided Google Drive link.
