@@ -1,20 +1,5 @@
 # RAGVLG
 
-# Table of Contents
-1. [Overview](#overview)
-2. [Repository Structure](#repository-structure)
-3. [Dataset](#dataset)
-4. [Environment Requirements](#environment-requirements)
-5. [RAG Framework Deployment](#rag-framework-deployment)
-6. [Main Experimental Workflow](#main-experimental-workflow)
-   - 6.1 [Dataset Construction](#1-dataset-construction)
-   - 6.2 [Visual Grounding Experiment](#2-visual-grounding-experiment)
-   - 6.3 [Multi-indicator Calculation](#3-multi-indicator-calculation)
-   - 6.4 [Environmental Risk Assessment](#4-Environmental-risk-assessment)
-   - 6.5 [Risk Clustering & Spatial Analysis](#5-risk-clustering--spatial-analysis)
-7. [Output Files Description](#output-files-description)
-8. [Notes](#notes)
-
 ## Overview
 This work proposes **RAGVLG**, a framework that integrates Retrieval-Augmented Generation (RAG) and Vision-Language Models (VLMs). It targets industrial land recognition, Environmental risk evaluation, risk grade clustering and spatial correlation analysis based on remote sensing imagery. Experiments are carried out on remote sensing datasets covering **Shenzhen and Hong Kong**.
 
