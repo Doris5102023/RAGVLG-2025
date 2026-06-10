@@ -9,7 +9,7 @@ This work proposes **RAGVLG**, a framework that integrates Retrieval-Augmented G
 The ground truth dataset for model evaluation. It contains original remote sensing images with manual annotations and JSON files storing real bounding box coordinates of industrial land.
 
 ### 📑 Industrial-Land
-Datasets and inference results for visual grounding tasks. It provides image data for large language model experiments and JSON files of visual grounding outputs from Qwen model.
+Datasets for visual grounding tasks. It provides image data for large language model experiments.
 
 ### 📑 llm-graph-builder-main
 A modified RAG framework referenced from Neo4j llm-graph-builder, which is used for knowledge graph construction and document retrieval.
