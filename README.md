@@ -6,35 +6,36 @@ This work proposes **RAGVLG**, a framework that integrates Retrieval-Augmented G
 All original remote sensing data, annotated labels and intermediate files are hosted on Google Drive.
 
 ## Repository Structure
-├── Clustering_results/ # Final risk clustering results & spatial analysis outputs
-│ ├── priority_based_risk_clusters.csv # Risk clustering index and priority table
-│ ├── priority_based_risk_clusters.geojson # Spatial file for QGIS risk visualization
-│ ├── priority_cluster_statistics.csv # Statistical information of each risk cluster
-│ ├── risk_level_mapping.csv # Mapping table of risk levels
-│ └── LISA_analysis_results/ # Local Indicators of Spatial Association (LISA) outputs
-├── Cropped_patches/ # Industrial land detection outputs from Qwen2.5-72B
-│ ├── Image files # Cropped industrial land image patches
-│ └── JSON files # Bounding box coordinates of detected targets
-├── gt_truth/ # Ground truth dataset
-│ ├── Remote sensing images # Original images with manual annotations
-│ └── JSON files # True bounding box coordinates of industrial land
-├── Industrial-Land/ # Dataset & results for visual grounding task
-│ ├── Remote sensing images # Image data for MLLM visual grounding
-│ └── JSON files # Visual grounding inference results of Qwen model
-├── RSI(final version) # Original remote sensing image patches
-│ # Filtered valid patches of Shenzhen and Hong Kong (exclude sea, mountain and edge areas)
-├── RAGVLG/ # Core experimental code folder
-│ ├── change_removal.py # Remove changed areas via change mask to build RSIL dataset
-│ ├── detection.py # MLLM visual grounding & industrial land evaluation
-│ ├── patch.py # Slice full remote sensing images into standard patches
-│ ├── geobbox.py # Extract bbox coordinates of detected industrial land patches
-│ ├── geoprocessor.py # Batch crop LST & NDVI images using gdalwarp
-│ ├── lstndvi.py # Calculate average LST and NDVI for each bbox region
-│ ├── ass.py # Environmental risk assessment for industrial land
-│ ├── kmeans.py # K-Means clustering to divide 5 risk levels
-│ ├── lisa_analysis.py # LISA spatial correlation analysis for risk distribution
-│ └── XXX_F1.py # Calculate F1-score for visual grounding evaluation
-└── llm-graph-builder-main/ # Modified RAG framework
+├── Clustering_results/                # Final risk clustering results & spatial analysis outputs
+│   ├── priority_based_risk_clusters.csv       # Risk clustering index and priority table
+│   ├── priority_based_risk_clusters.geojson   # Spatial file for QGIS risk visualization
+│   ├── priority_cluster_statistics.csv        # Statistical information of each risk cluster
+│   ├── risk_level_mapping.csv                 # Mapping table of risk levels
+│   └── LISA_analysis_results/                 # Local Indicators of Spatial Association (LISA) outputs
+├── Cropped_patches/                    # Industrial land detection outputs from Qwen2.5-72B
+│   ├── Image files                          # Cropped industrial land image patches
+│   └── JSON files                           # Bounding box coordinates of detected targets
+├── gt_truth/                           # Ground truth dataset
+│   ├── Remote sensing images                # Original images with manual annotations
+│   └── JSON files                           # True bounding box coordinates of industrial land
+├── Industrial-Land/                    # Dataset & results for visual grounding task
+│   ├── Remote sensing images                # Image data for MLLM visual grounding
+│   └── JSON files                           # Visual grounding inference results of Qwen model
+├── RSI(final version)/                 # Original remote sensing image patches
+        # Filtered valid patches of Shenzhen and Hong Kong (exclude sea, mountain and edge areas)
+├── RAGVLG/                            # Core experimental code folder
+│   ├── change_removal.py        # Remove changed areas via change mask to build RSIL dataset
+│   ├── detection.py             # MLLM visual grounding & industrial land evaluation
+│   ├── patch.py                 # Slice full remote sensing images into standard patches
+│   ├── geobbox.py               # Extract bbox coordinates of detected industrial land patches
+│   ├── geoprocessor.py          # Batch crop LST & NDVI images using gdalwarp
+│   ├── lstndvi.py               # Calculate average LST and NDVI for each bbox region
+│   ├── ass.py                   # Environmental risk assessment for industrial land
+│   ├── kmeans.py                # K-Means clustering to divide 5 risk levels
+│   ├── lisa_analysis.py         # LISA spatial correlation analysis for risk distribution
+│   └── XXX_F1.py                # Calculate F1-score for visual grounding evaluation
+└── llm-graph-builder-main/            # Modified RAG framework
+        # Derived from Neo4j llm-graph-builder, for knowledge graph construction and retrieval
 
 ## Dataset
 All datasets used in this project are stored on Google Drive:
