@@ -54,7 +54,7 @@ This RAG module adopts a front-end and back-end separated architecture powered b
 
 ## 📝 Main Experimental Workflow
 1. **Dataset Construction**: We build the RSIL dataset referring to the EVLab-CMCD framework. Invalid changed areas are removed to obtain standard industrial land datasets.
-2. **Visual Grounding Experiment**: We adopt Qwen2.5-72B as the main model. Two kinds of prompts are designed for industrial land detection. With IoU set to 0.3, F1-score is calculated for quantitative evaluation.
+2. **Visual Grounding Experiment**: Based on the RAGVLG framework, we evaluate various VLM backbones for visual grounding on the RSIL dataset, covering general models (GLM, InternVL) and remote sensing models. Qwen2.5-VL-72B achieves the best performance and is adopted as the primary model for environmental risk assessment. Two kinds of prompts are designed for industrial land detection. With IoU set to 0.3, F1-score is calculated for quantitative evaluation.
 3. **Multi-indicator Calculation**: Split remote sensing images into patches, extract bounding box coordinates, batch crop LST and NDVI images, and compute average values of the two indicators for each industrial land parcel.
 4. **Environmental Risk Assessment**: Calculate vegetation coverage, industrial area proportion, temperature excess and vegetation gap. A weighted scoring strategy is applied to assess the environmental risk of each plot.
 5. **Risk Clustering & Spatial Analysis**: Classify all industrial lands into five risk levels via K-Means. Conduct LISA analysis to explore spatial agglomeration features of risks. Visualize results in QGIS.
