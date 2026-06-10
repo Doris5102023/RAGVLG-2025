@@ -6,7 +6,7 @@ This work proposes **RAGVLG**, a framework that integrates Retrieval-Augmented G
 All original remote sensing data, annotated labels and intermediate files are hosted on Google Drive.
 
 ## Repository Structure
-├── Clustering_results/                # Final risk clustering results & spatial analysis outputs
+> ├── Clustering_results/                # Final risk clustering results & spatial analysis outputs
 │   ├── priority_based_risk_clusters.csv       # Risk clustering index and priority table
 │   ├── priority_based_risk_clusters.geojson   # Spatial file for QGIS risk visualization
 │   ├── priority_cluster_statistics.csv        # Statistical information of each risk cluster
