@@ -15,9 +15,7 @@ Datasets and inference results for visual grounding tasks. It provides image dat
 A modified RAG framework referenced from Neo4j llm-graph-builder, which is used for knowledge graph construction and document retrieval.
 
 ### 📑 RAGVLG (Core Code Directory)
-- `change_removal.py`: Remove changed regions from remote sensing images via change mask to build the RSIL dataset.
 - `detection.py`: Implement MLLM-based visual grounding and industrial land detection evaluation.
-- `patch.py`: Split complete remote sensing images into standard image patches.
 - `geobbox.py`: Extract bounding box coordinates of detected industrial land patches.
 - `geoprocessor.py`: Batch crop LST and NDVI image regions using gdalwarp tool.
 - `lstndvi.py`: Calculate the average LST and NDVI values for each bounding box area.
