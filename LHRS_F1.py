@@ -151,8 +151,8 @@ def evaluate(predictions, gts, iou_thresh=0.3):
 
 if __name__ == "__main__":
     # 输入路径
-    csv_file = 'D:\Remote Sensing\processed_resultsNoRAG.csv'
-    json_dir = './gt_truth/工业用地/'  # 放置 result_*.json 的目录
+    csv_file = ''
+    json_dir = ''  # 放置 result_*.json 的目录
 
     # 加载预测
     predictions = load_predictions(csv_file)
