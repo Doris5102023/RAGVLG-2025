@@ -239,8 +239,8 @@ def evaluate_predictions(pred_json_path: str, gt_dir: str, iou_threshold: float 
 # ----------------------------
 
 if __name__ == "__main__":
-    PRED_FILE = r"D:\Remote Sensing\batch_inference_result.json"  # 替换为你的预测 JSON 文件路径
-    GT_DIR = "gt_truth\工业用地"  # ground truth 文件夹路径
+    PRED_FILE = ""  # 替换为你的预测 JSON 文件路径
+    GT_DIR = ""  # ground truth 文件夹路径
     IOU_THRESHOLD = 0.3  # IoU阈值
     MAX_PRED_BOXES = 4  # 最多选取3个最优预测框参与计算
 
