@@ -527,8 +527,8 @@ def main(gt_folder, pred_folder, iou_threshold=0.3, output_dir="bbox_results"):
 
 if __name__ == "__main__":
     # 配置路径
-    gt_folder_path = "D:\\Remote Sensing\\gt_truth\\工业用地"
-    pred_folder_path = r"D:\Remote Sensing\5880 results\home\yuling\test\test_result\250917GLM4.5v"  # 可更换为其他预测文件夹
+    gt_folder_path = ""
+    pred_folder_path = ""  # 可更换为其他预测文件夹
     output_directory = "bbox_metrics_results"
     
     # 验证路径
