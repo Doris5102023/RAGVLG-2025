@@ -6,7 +6,7 @@ import csv
 from collections import defaultdict
 
 def calculate_iou(gt_bbox, pred_bbox):
-    """¼ÆËãÁ½¸ö±ß½ç¿òµÄ½»²¢±È£¨IoU£©"""
+    """è®¡ç®—ä¸¤ä¸ªè¾¹ç•Œæ¡†çš„äº¤å¹¶æ¯”ï¼ˆIoUï¼‰"""
     x1 = max(gt_bbox[0], pred_bbox[0])
     y1 = max(gt_bbox[1], pred_bbox[1])
     x2 = min(gt_bbox[2], pred_bbox[2])
@@ -20,7 +20,7 @@ def calculate_iou(gt_bbox, pred_bbox):
     return intersection_area / union_area if union_area != 0 else 0
 
 def get_number_id(filename, prefix):
-    """´ÓÎÄ¼şÃûÖĞÌáÈ¡Êı×Ö±àºÅ"""
+    """ä»æ–‡ä»¶åä¸­æå–æ•°å­—ç¼–å·"""
     pattern = re.compile(f'{prefix}_(\\d+)\\.json')
     match = pattern.match(filename)
     if match:
@@ -28,7 +28,7 @@ def get_number_id(filename, prefix):
     return None
 
 def validate_bbox_coords(bbox, source, file_id, strict_mode=True):
-    """ÑéÖ¤±ß½ç¿ò×ø±êÊÇ·ñÓĞĞ§£¬·µ»ØÑéÖ¤½á¹ûºÍ±ß½ç¿ò"""
+    """éªŒè¯è¾¹ç•Œæ¡†åæ ‡æ˜¯å¦æœ‰æ•ˆï¼Œè¿”å›éªŒè¯ç»“æœå’Œè¾¹ç•Œæ¡†"""
     result = {
         'valid': True,
         'bbox': bbox,
@@ -37,45 +37,45 @@ def validate_bbox_coords(bbox, source, file_id, strict_mode=True):
         'file_id': file_id
     }
     
-    # ¼ì²éÊÇ·ñ°üº¬4¸ö×ø±êÖµ
+    # æ£€æŸ¥æ˜¯å¦åŒ…å«4ä¸ªåæ ‡å€¼
     if len(bbox) != 4:
         result['valid'] = False
-        result['error'] = f"±ß½ç¿ò¸ñÊ½´íÎó£¬±ØĞë°üº¬4¸ö×ø±êÖµ£¬Êµ¼ÊÓĞ{len(bbox)}¸ö"
+        result['error'] = f"è¾¹ç•Œæ¡†æ ¼å¼é”™è¯¯ï¼Œå¿…é¡»åŒ…å«4ä¸ªåæ ‡å€¼ï¼Œå®é™…æœ‰{len(bbox)}ä¸ª"
         return result
     
-    # ¼ì²é×ø±êÊÇ·ñÎªÊı×Ö
+    # æ£€æŸ¥åæ ‡æ˜¯å¦ä¸ºæ•°å­—
     try:
         bbox = [float(coord) for coord in bbox]
         result['bbox'] = bbox
     except (ValueError, TypeError):
         result['valid'] = False
-        result['error'] = "±ß½ç¿ò×ø±ê±ØĞëÎªÊı×Ö"
+        result['error'] = "è¾¹ç•Œæ¡†åæ ‡å¿…é¡»ä¸ºæ•°å­—"
         return result
     
-    # ÑÏ¸ñÄ£Ê½ÏÂ¼ì²é·¶Î§ºÍË³Ğò
+    # ä¸¥æ ¼æ¨¡å¼ä¸‹æ£€æŸ¥èŒƒå›´å’Œé¡ºåº
     if strict_mode:
-        # ¼ì²é×ø±ê·¶Î§ÊÇ·ñÓĞĞ§£¨0-512»ò¸ù¾İÊµ¼ÊÇé¿öµ÷Õû£©
+        # æ£€æŸ¥åæ ‡èŒƒå›´æ˜¯å¦æœ‰æ•ˆï¼ˆ0-512æˆ–æ ¹æ®å®é™…æƒ…å†µè°ƒæ•´ï¼‰
         for i, coord in enumerate(bbox):
             if coord < 0 or coord > 512:
                 result['valid'] = False
-                result['error'] = f"±ß½ç¿òµÚ{i+1}¸ö×ø±êÖµ({coord})³¬³öÓĞĞ§·¶Î§[0, 512]"
+                result['error'] = f"è¾¹ç•Œæ¡†ç¬¬{i+1}ä¸ªåæ ‡å€¼({coord})è¶…å‡ºæœ‰æ•ˆèŒƒå›´[0, 512]"
                 return result
         
-        # ¼ì²éx2 > x1ºÍy2 > y1
+        # æ£€æŸ¥x2 > x1å’Œy2 > y1
         if bbox[2] <= bbox[0]:
             result['valid'] = False
-            result['error'] = f"±ß½ç¿òx2({bbox[2]})±ØĞë´óÓÚx1({bbox[0]})"
+            result['error'] = f"è¾¹ç•Œæ¡†x2({bbox[2]})å¿…é¡»å¤§äºx1({bbox[0]})"
             return result
             
         if bbox[3] <= bbox[1]:
             result['valid'] = False
-            result['error'] = f"±ß½ç¿òy2({bbox[3]})±ØĞë´óÓÚy1({bbox[1]})"
+            result['error'] = f"è¾¹ç•Œæ¡†y2({bbox[3]})å¿…é¡»å¤§äºy1({bbox[1]})"
             return result
     
     return result
 
 def extract_all_bbox_coordinates(text):
-    """´ÓÎÄ±¾ÖĞÌáÈ¡ËùÓĞÒÔ·½À¨ºÅ[]À¨ÆğÀ´µÄ×ø±êÊı×é"""
+    """ä»æ–‡æœ¬ä¸­æå–æ‰€æœ‰ä»¥æ–¹æ‹¬å·[]æ‹¬èµ·æ¥çš„åæ ‡æ•°ç»„"""
     pattern = r'\[\s*(\d+\.?\d*)\s*,\s*(\d+\.?\d*)\s*,\s*(\d+\.?\d*)\s*,\s*(\d+\.?\d*)\s*\]'
     matches = re.findall(pattern, text)
     
@@ -90,7 +90,7 @@ def extract_all_bbox_coordinates(text):
     return bboxes
 
 def safe_json_load(file_path):
-    """°²È«¼ÓÔØJSONÎÄ¼ş£¬³¢ÊÔ¶àÖÖ±àÂë"""
+    """å®‰å…¨åŠ è½½JSONæ–‡ä»¶ï¼Œå°è¯•å¤šç§ç¼–ç """
     encodings = ['utf-8', 'gbk', 'gb2312', 'utf-16']
     for encoding in encodings:
         try:
@@ -100,7 +100,7 @@ def safe_json_load(file_path):
         except (UnicodeDecodeError, json.JSONDecodeError):
             continue
     
-    # ËùÓĞ±àÂë³¢ÊÔÊ§°Üºó£¬·µ»ØÔ­Ê¼ÄÚÈİ
+    # æ‰€æœ‰ç¼–ç å°è¯•å¤±è´¥åï¼Œè¿”å›åŸå§‹å†…å®¹
     try:
         with open(file_path, 'rb') as f:
             content = f.read().decode('utf-8', errors='replace')
@@ -109,7 +109,7 @@ def safe_json_load(file_path):
         return "", None, None
 
 def parse_bbox_dict(bbox_dict):
-    """½âÎö°üº¬xmin/ymin/xmax/ymax»òx1/y1/x2/y2µÄ±ß½ç¿ò×Öµä"""
+    """è§£æåŒ…å«xmin/ymin/xmax/ymaxæˆ–x1/y1/x2/y2çš„è¾¹ç•Œæ¡†å­—å…¸"""
     if all(key in bbox_dict for key in ['xmin', 'ymin', 'xmax', 'ymax']):
         return [
             bbox_dict['xmin'],
@@ -127,44 +127,44 @@ def parse_bbox_dict(bbox_dict):
     return None
 
 def count_all_gt_bboxes(gt_folder, gt_prefix="result", strict_validation=False):
-    """Í³¼ÆËùÓĞÕæÊµ±ê×¢µÄ±ß½ç¿ò£¬Ö§³Ö¶àÖÖ¸ñÊ½"""
+    """ç»Ÿè®¡æ‰€æœ‰çœŸå®æ ‡æ³¨çš„è¾¹ç•Œæ¡†ï¼Œæ”¯æŒå¤šç§æ ¼å¼"""
     total_gt = 0
     gt_files_info = {}
     skipped_files = []
     empty_files = []
     
-    print(f"\n¿ªÊ¼Í³¼ÆÕæÊµ±ê×¢ÎÄ¼ş: {gt_folder}")
+    print(f"\nå¼€å§‹ç»Ÿè®¡çœŸå®æ ‡æ³¨æ–‡ä»¶: {gt_folder}")
     
     for filename in os.listdir(gt_folder):
         if filename.endswith('.json'):
             file_id = get_number_id(filename, gt_prefix)
             if not file_id:
-                print(f"ÎŞ·¨Ê¶±ğµÄÎÄ¼şÃû¸ñÊ½: {filename}")
+                print(f"æ— æ³•è¯†åˆ«çš„æ–‡ä»¶åæ ¼å¼: {filename}")
                 continue
                 
             file_path = os.path.join(gt_folder, filename)
             try:
                 content, gt_data, encoding = safe_json_load(file_path)
                 if encoding:
-                    print(f"´¦ÀíÎÄ¼ş: {filename} (±àÂë: {encoding})")
+                    print(f"å¤„ç†æ–‡ä»¶: {filename} (ç¼–ç : {encoding})")
                 else:
-                    print(f"´¦ÀíÎÄ¼ş: {filename} (±àÂëÎ´Öª)")
+                    print(f"å¤„ç†æ–‡ä»¶: {filename} (ç¼–ç æœªçŸ¥)")
                 
                 bboxes = []
                 validations = []
                 extracted_count = 0
                 
-                # 1. ³¢ÊÔ´Ó½á¹¹»¯Êı¾İÖĞÌáÈ¡
+                # 1. å°è¯•ä»ç»“æ„åŒ–æ•°æ®ä¸­æå–
                 if gt_data:
-                    # ´¦Àíµ¥±ß½ç¿ò×Öµä¸ñÊ½: {"xmin":..., "ymin":..., "xmax":..., "ymax":...}
+                    # å¤„ç†å•è¾¹ç•Œæ¡†å­—å…¸æ ¼å¼: {"xmin":..., "ymin":..., "xmax":..., "ymax":...}
                     if isinstance(gt_data, dict):
-                        # ¼ì²éÊÇ·ñÎªµ¥¸ö±ß½ç¿ò×Öµä
+                        # æ£€æŸ¥æ˜¯å¦ä¸ºå•ä¸ªè¾¹ç•Œæ¡†å­—å…¸
                         parsed_single_bbox = parse_bbox_dict(gt_data)
                         if parsed_single_bbox:
                             extracted_count += 1
                             validation = validate_bbox_coords(
                                 parsed_single_bbox, 
-                                f"ÕæÊµ±ê×¢ÎÄ¼ş {filename} - µ¥±ß½ç¿ò×Öµä", 
+                                f"çœŸå®æ ‡æ³¨æ–‡ä»¶ {filename} - å•è¾¹ç•Œæ¡†å­—å…¸", 
                                 file_id,
                                 strict_mode=strict_validation
                             )
@@ -172,7 +172,7 @@ def count_all_gt_bboxes(gt_folder, gt_prefix="result", strict_validation=False):
                             if validation['valid']:
                                 bboxes.append(validation['bbox'])
                     
-                    # ´¦ÀíÀà±ğ-±ß½ç¿òÁĞ±í¸ñÊ½: "¹¤ÒµÓÃµØ": [{"xmin":...,}, ...]
+                    # å¤„ç†ç±»åˆ«-è¾¹ç•Œæ¡†åˆ—è¡¨æ ¼å¼: "å·¥ä¸šç”¨åœ°": [{"xmin":...,}, ...]
                     if isinstance(gt_data, dict):
                         for key, value in gt_data.items():
                             if isinstance(value, list) and len(value) > 0 and isinstance(value[0], dict):
@@ -182,7 +182,7 @@ def count_all_gt_bboxes(gt_folder, gt_prefix="result", strict_validation=False):
                                         extracted_count += 1
                                         validation = validate_bbox_coords(
                                             parsed_bbox, 
-                                            f"ÕæÊµ±ê×¢ÎÄ¼ş {filename} - Àà±ğ[{key}]", 
+                                            f"çœŸå®æ ‡æ³¨æ–‡ä»¶ {filename} - ç±»åˆ«[{key}]", 
                                             file_id,
                                             strict_mode=strict_validation
                                         )
@@ -190,7 +190,7 @@ def count_all_gt_bboxes(gt_folder, gt_prefix="result", strict_validation=False):
                                         if validation['valid']:
                                             bboxes.append(validation['bbox'])
                     
-                    # ´¦Àí´«Í³µÄ±ß½ç¿ò×Ö¶Î: bboxes, industrial_land_bboxesµÈ
+                    # å¤„ç†ä¼ ç»Ÿçš„è¾¹ç•Œæ¡†å­—æ®µ: bboxes, industrial_land_bboxesç­‰
                     bbox_fields = [
                         'bboxes', 'annotations', 'objects', 'ground_truth',
                         'industrial_land_bboxes'
@@ -204,7 +204,7 @@ def count_all_gt_bboxes(gt_folder, gt_prefix="result", strict_validation=False):
                                         extracted_count += 1
                                         validation = validate_bbox_coords(
                                             parsed_bbox, 
-                                            f"ÕæÊµ±ê×¢ÎÄ¼ş {filename} - {field}", 
+                                            f"çœŸå®æ ‡æ³¨æ–‡ä»¶ {filename} - {field}", 
                                             file_id,
                                             strict_mode=strict_validation
                                         )
@@ -213,13 +213,13 @@ def count_all_gt_bboxes(gt_folder, gt_prefix="result", strict_validation=False):
                                             bboxes.append(validation['bbox'])
                                         continue
                                 
-                                # ´Ó'bbox'»ò'coordinates'¼ü»ñÈ¡
+                                # ä»'bbox'æˆ–'coordinates'é”®è·å–
                                 if isinstance(item, dict):
                                     if 'bbox' in item:
                                         extracted_count += 1
                                         validation = validate_bbox_coords(
                                             item['bbox'], 
-                                            f"ÕæÊµ±ê×¢ÎÄ¼ş {filename} - {field}", 
+                                            f"çœŸå®æ ‡æ³¨æ–‡ä»¶ {filename} - {field}", 
                                             file_id,
                                             strict_mode=strict_validation
                                         )
@@ -230,7 +230,7 @@ def count_all_gt_bboxes(gt_folder, gt_prefix="result", strict_validation=False):
                                         extracted_count += 1
                                         validation = validate_bbox_coords(
                                             item['coordinates'], 
-                                            f"ÕæÊµ±ê×¢ÎÄ¼ş {filename} - {field}", 
+                                            f"çœŸå®æ ‡æ³¨æ–‡ä»¶ {filename} - {field}", 
                                             file_id,
                                             strict_mode=strict_validation
                                         )
@@ -238,14 +238,14 @@ def count_all_gt_bboxes(gt_folder, gt_prefix="result", strict_validation=False):
                                         if validation['valid']:
                                             bboxes.append(validation['bbox'])
                 
-                # 2. Èç¹ûÃ»ÓĞ½á¹¹»¯Êı¾İ£¬´ÓÎÄ±¾ÖĞÌáÈ¡
+                # 2. å¦‚æœæ²¡æœ‰ç»“æ„åŒ–æ•°æ®ï¼Œä»æ–‡æœ¬ä¸­æå–
                 if not bboxes and content:
                     extracted_bboxes = extract_all_bbox_coordinates(content)
                     extracted_count = len(extracted_bboxes)
                     for bbox in extracted_bboxes:
                         validation = validate_bbox_coords(
                             bbox, 
-                            f"ÕæÊµ±ê×¢ÎÄ¼ş {filename} - ÎÄ±¾ÌáÈ¡", 
+                            f"çœŸå®æ ‡æ³¨æ–‡ä»¶ {filename} - æ–‡æœ¬æå–", 
                             file_id,
                             strict_mode=strict_validation
                         )
@@ -253,10 +253,10 @@ def count_all_gt_bboxes(gt_folder, gt_prefix="result", strict_validation=False):
                         if validation['valid']:
                             bboxes.append(validation['bbox'])
                 
-                # ¼ÇÂ¼¿ÕÎÄ¼ş
+                # è®°å½•ç©ºæ–‡ä»¶
                 if extracted_count == 0:
                     empty_files.append(filename)
-                    print(f"¾¯¸æ: ÎÄ¼ş {filename} Î´ÌáÈ¡µ½ÈÎºÎ±ß½ç¿ò")
+                    print(f"è­¦å‘Š: æ–‡ä»¶ {filename} æœªæå–åˆ°ä»»ä½•è¾¹ç•Œæ¡†")
                 
                 count = len(bboxes)
                 total_gt += count
@@ -269,25 +269,25 @@ def count_all_gt_bboxes(gt_folder, gt_prefix="result", strict_validation=False):
                     'validations': validations
                 }
                 
-                print(f"ÎÄ¼ş {filename}: ÌáÈ¡µ½{extracted_count}¸ö£¬ÓĞĞ§{count}¸ö")
+                print(f"æ–‡ä»¶ {filename}: æå–åˆ°{extracted_count}ä¸ªï¼Œæœ‰æ•ˆ{count}ä¸ª")
                 
             except Exception as e:
                 skipped_files.append(filename)
-                print(f"´¦ÀíÎÄ¼ş {filename} Ê±³ö´í: {str(e)}")
+                print(f"å¤„ç†æ–‡ä»¶ {filename} æ—¶å‡ºé”™: {str(e)}")
     
-    # Êä³öÍ³¼Æsummary
-    print("\nÕæÊµ±ê×¢Í³¼Æ½á¹û:")
-    print(f"×ÜÎÄ¼şÊı: {len(os.listdir(gt_folder))}")
-    print(f"³É¹¦´¦ÀíÎÄ¼şÊı: {len(gt_files_info)}")
-    print(f"Ìø¹ıÎÄ¼şÊı: {len(skipped_files)}")
-    print(f"¿ÕÎÄ¼şÊı: {len(empty_files)}")
-    print(f"×ÜÌáÈ¡ÊıÁ¿: {sum(info['extracted_count'] for info in gt_files_info.values())}")
-    print(f"×ÜÓĞĞ§ÊıÁ¿: {total_gt}")
+    # è¾“å‡ºç»Ÿè®¡summary
+    print("\nçœŸå®æ ‡æ³¨ç»Ÿè®¡ç»“æœ:")
+    print(f"æ€»æ–‡ä»¶æ•°: {len(os.listdir(gt_folder))}")
+    print(f"æˆåŠŸå¤„ç†æ–‡ä»¶æ•°: {len(gt_files_info)}")
+    print(f"è·³è¿‡æ–‡ä»¶æ•°: {len(skipped_files)}")
+    print(f"ç©ºæ–‡ä»¶æ•°: {len(empty_files)}")
+    print(f"æ€»æå–æ•°é‡: {sum(info['extracted_count'] for info in gt_files_info.values())}")
+    print(f"æ€»æœ‰æ•ˆæ•°é‡: {total_gt}")
     
     return total_gt, gt_files_info
 
 def process_pred_file(pred_path, file_id, pred_prefix="predicted"):
-    """´¦Àíµ¥¸öÔ¤²âÎÄ¼ş£¬Ö§³Ö¶àÖÖ±ß½ç¿ò¸ñÊ½"""
+    """å¤„ç†å•ä¸ªé¢„æµ‹æ–‡ä»¶ï¼Œæ”¯æŒå¤šç§è¾¹ç•Œæ¡†æ ¼å¼"""
     pred_filename = os.path.basename(pred_path)
     pred_bboxes = []
     all_bboxes = []
@@ -301,15 +301,15 @@ def process_pred_file(pred_path, file_id, pred_prefix="predicted"):
         texts_to_search.append(content)
         
         extracted_bboxes = []
-        # 1. ´Ó½á¹¹»¯Êı¾İÖĞÌáÈ¡±ß½ç¿ò
+        # 1. ä»ç»“æ„åŒ–æ•°æ®ä¸­æå–è¾¹ç•Œæ¡†
         if pred_data:
-            # ´¦Àíµ¥±ß½ç¿ò×Öµä¸ñÊ½: {"xmin":..., "ymin":..., "xmax":..., "ymax":...}
+            # å¤„ç†å•è¾¹ç•Œæ¡†å­—å…¸æ ¼å¼: {"xmin":..., "ymin":..., "xmax":..., "ymax":...}
             if isinstance(pred_data, dict):
                 parsed_single_bbox = parse_bbox_dict(pred_data)
                 if parsed_single_bbox:
                     extracted_bboxes.append(parsed_single_bbox)
             
-            # ´¦ÀíÀà±ğ-±ß½ç¿òÁĞ±í¸ñÊ½: "¹¤ÒµÓÃµØ": [{"xmin":...,}, ...]
+            # å¤„ç†ç±»åˆ«-è¾¹ç•Œæ¡†åˆ—è¡¨æ ¼å¼: "å·¥ä¸šç”¨åœ°": [{"xmin":...,}, ...]
             if isinstance(pred_data, dict):
                 for key, value in pred_data.items():
                     if isinstance(value, list) and len(value) > 0 and isinstance(value[0], dict):
@@ -318,7 +318,7 @@ def process_pred_file(pred_path, file_id, pred_prefix="predicted"):
                             if parsed_bbox:
                                 extracted_bboxes.append(parsed_bbox)
             
-            # ´¦Àí´«Í³µÄ±ß½ç¿ò×Ö¶Î
+            # å¤„ç†ä¼ ç»Ÿçš„è¾¹ç•Œæ¡†å­—æ®µ
             bbox_fields = [
                 'bboxes', 'annotations', 'objects', 
                 'industrial_land_bboxes'
@@ -331,11 +331,11 @@ def process_pred_file(pred_path, file_id, pred_prefix="predicted"):
                             if parsed_bbox:
                                 extracted_bboxes.append(parsed_bbox)
         
-        # 2. ´ÓÎÄ±¾ÖĞÌáÈ¡±ß½ç¿ò
+        # 2. ä»æ–‡æœ¬ä¸­æå–è¾¹ç•Œæ¡†
         for text in texts_to_search:
             extracted_bboxes.extend(extract_all_bbox_coordinates(text))
         
-        # È¥ÖØ´¦Àí
+        # å»é‡å¤„ç†
         unique_bboxes = []
         seen = set()
         for bbox in extracted_bboxes:
@@ -344,11 +344,11 @@ def process_pred_file(pred_path, file_id, pred_prefix="predicted"):
                 seen.add(bbox_tuple)
                 unique_bboxes.append(bbox)
         
-        # ÑéÖ¤Ã¿¸öÌáÈ¡µÄ±ß½ç¿ò
+        # éªŒè¯æ¯ä¸ªæå–çš„è¾¹ç•Œæ¡†
         for idx, bbox in enumerate(unique_bboxes):
             validation = validate_bbox_coords(
                 bbox, 
-                f"Ô¤²âÎÄ¼ş {pred_filename} ÌáÈ¡µÄ¿ò[{idx}]",
+                f"é¢„æµ‹æ–‡ä»¶ {pred_filename} æå–çš„æ¡†[{idx}]",
                 file_id
             )
             all_bboxes.append(validation)
@@ -356,12 +356,12 @@ def process_pred_file(pred_path, file_id, pred_prefix="predicted"):
                 pred_bboxes.append(validation['bbox'])
     
     except Exception as e:
-        raise ValueError(f"´¦ÀíÔ¤²âÎÄ¼ş {pred_filename} Ê±³ö´í:{str(e)}")
+        raise ValueError(f"å¤„ç†é¢„æµ‹æ–‡ä»¶ {pred_filename} æ—¶å‡ºé”™:{str(e)}")
     
     return pred_bboxes, len(pred_bboxes), all_bboxes
 
 def calculate_pair_metrics(gt_bboxes, pred_bboxes, iou_threshold=0.3):
-    """¼ÆËãµ¥¸öÎÄ¼şµÄÆ¥ÅäÖ¸±ê"""
+    """è®¡ç®—å•ä¸ªæ–‡ä»¶çš„åŒ¹é…æŒ‡æ ‡"""
     correct = 0
     matched_gt = set()
     
@@ -383,7 +383,7 @@ def calculate_pair_metrics(gt_bboxes, pred_bboxes, iou_threshold=0.3):
     return correct, matched_gt
 
 def save_bboxes_to_csv(bboxes, output_file, is_gt=True):
-    """½«±ß½ç¿òĞÅÏ¢±£´æµ½CSVÎÄ¼ş"""
+    """å°†è¾¹ç•Œæ¡†ä¿¡æ¯ä¿å­˜åˆ°CSVæ–‡ä»¶"""
     with open(output_file, 'w', newline='', encoding='utf-8') as f:
         fieldnames = ['file_id', 'box_id', 'x1', 'y1', 'x2', 'y2', 'source', 'is_matched', 'is_valid', 'error']
         writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -392,20 +392,20 @@ def save_bboxes_to_csv(bboxes, output_file, is_gt=True):
         for bbox in bboxes:
             writer.writerow(bbox)
     
-    bbox_type = "ÕæÊµ±ê×¢" if is_gt else "Ô¤²â¿ò"
-    print(f"\nÒÑ½«{len(bboxes)}¸ö{bbox_type}±ß½ç¿ò±£´æµ½: {output_file}")
+    bbox_type = "çœŸå®æ ‡æ³¨" if is_gt else "é¢„æµ‹æ¡†"
+    print(f"\nå·²å°†{len(bboxes)}ä¸ª{bbox_type}è¾¹ç•Œæ¡†ä¿å­˜åˆ°: {output_file}")
 
 def main(gt_folder, pred_folder, iou_threshold=0.3, output_dir="bbox_results", strict_validation=False):
-    """Ö÷º¯Êı£ºÍ³¼ÆÕæÊµ±ê×¢ºÍÔ¤²â½á¹ûµÄ×¼È·ÂÊºÍÕÙ»ØÂÊ"""
+    """ä¸»å‡½æ•°ï¼šç»Ÿè®¡çœŸå®æ ‡æ³¨å’Œé¢„æµ‹ç»“æœçš„å‡†ç¡®ç‡å’Œå¬å›ç‡"""
     os.makedirs(output_dir, exist_ok=True)
     
-    # 1. Í³¼ÆËùÓĞÕæÊµ±ê×¢
+    # 1. ç»Ÿè®¡æ‰€æœ‰çœŸå®æ ‡æ³¨
     total_gt_all, gt_files_info = count_all_gt_bboxes(
         gt_folder, 
         strict_validation=strict_validation
     )
     
-    # 2. ÊÕ¼¯Ô¤²âÎÄ¼şĞÅÏ¢
+    # 2. æ”¶é›†é¢„æµ‹æ–‡ä»¶ä¿¡æ¯
     pred_files = defaultdict(str)
     for filename in os.listdir(pred_folder):
         if filename.endswith('.json'):
@@ -413,12 +413,12 @@ def main(gt_folder, pred_folder, iou_threshold=0.3, output_dir="bbox_results", s
             if file_id:
                 pred_files[file_id] = os.path.join(pred_folder, filename)
     
-    # 3. ÕÒµ½Æ¥ÅäµÄÎÄ¼ş¶Ô
+    # 3. æ‰¾åˆ°åŒ¹é…çš„æ–‡ä»¶å¯¹
     matched_ids = set(gt_files_info.keys()) & set(pred_files.keys())
     unmatched_gt_ids = set(gt_files_info.keys()) - matched_ids
     total_matched_gt = total_gt_all - sum(gt_files_info[id]['count'] for id in unmatched_gt_ids)
     
-    # 4. ´¦ÀíÆ¥ÅäµÄÎÄ¼ş¶Ô
+    # 4. å¤„ç†åŒ¹é…çš„æ–‡ä»¶å¯¹
     total_pred_all = 0
     total_correct_all = 0
     total_matched_gt_all = 0
@@ -442,7 +442,7 @@ def main(gt_folder, pred_folder, iou_threshold=0.3, output_dir="bbox_results", s
             total_correct_all += correct_count
             total_matched_gt_all += len(matched_gt_indices)
             
-            # ¼ÇÂ¼ÕæÊµ±ê×¢
+            # è®°å½•çœŸå®æ ‡æ³¨
             for idx, validation in enumerate(gt_info['validations']):
                 all_gt_bboxes.append({
                     'file_id': file_id,
@@ -457,7 +457,7 @@ def main(gt_folder, pred_folder, iou_threshold=0.3, output_dir="bbox_results", s
                     'error': validation['error']
                 })
             
-            # ¼ÇÂ¼Ô¤²â¿ò
+            # è®°å½•é¢„æµ‹æ¡†
             for idx, validation in enumerate(all_pred_validations):
                 is_matched = False
                 if validation['valid']:
@@ -481,40 +481,40 @@ def main(gt_folder, pred_folder, iou_threshold=0.3, output_dir="bbox_results", s
             
             precision = correct_count / pred_count if pred_count > 0 else 0
             recall = len(matched_gt_indices) / gt_count if gt_count > 0 else 0
-            print(f"ÎÄ¼ş¶Ô {file_id}: ÕæÊµ¿ò={gt_count}, Ô¤²â¿ò={pred_count}, ÕıÈ·Æ¥Åä={correct_count}, ¾«È·ÂÊ={precision:.4f}, ÕÙ»ØÂÊ={recall:.4f}")
+            print(f"æ–‡ä»¶å¯¹ {file_id}: çœŸå®æ¡†={gt_count}, é¢„æµ‹æ¡†={pred_count}, æ­£ç¡®åŒ¹é…={correct_count}, ç²¾ç¡®ç‡={precision:.4f}, å¬å›ç‡={recall:.4f}")
             
         except Exception as e:
-            print(f"´¦ÀíÎÄ¼ş¶Ô {file_id} Ê±³ö´í: {str(e)}")
+            print(f"å¤„ç†æ–‡ä»¶å¯¹ {file_id} æ—¶å‡ºé”™: {str(e)}")
             continue
     
-    # ±£´æ½á¹ûµ½CSV
+    # ä¿å­˜ç»“æœåˆ°CSV
     save_bboxes_to_csv(all_gt_bboxes, os.path.join(output_dir, "all_gt_bboxes.csv"), is_gt=True)
     save_bboxes_to_csv(all_pred_bboxes, os.path.join(output_dir, "all_pred_bboxes.csv"), is_gt=False)
     
-    # ¼ÆËã×ÜÖ¸±ê
+    # è®¡ç®—æ€»æŒ‡æ ‡
     overall_precision = total_correct_all / total_pred_all if total_pred_all > 0 else 0
     overall_recall = total_matched_gt_all / total_matched_gt if total_matched_gt > 0 else 0
     f1_score = 2 * (overall_precision * overall_recall) / (overall_precision + overall_recall) if (overall_precision + overall_recall) > 0 else 0
     
-    print("\n===== ×ÜÌåÍ³¼Æ =====")
-    print(f"×ÜÕæÊµ¿òÊı: {total_matched_gt}")
-    print(f"×ÜÔ¤²â¿òÊı: {total_pred_all}")
-    print(f"×ÜÕıÈ·Æ¥ÅäÊı: {total_correct_all}")
-    print(f"¾«È·ÂÊ: {overall_precision:.4f}")
-    print(f"ÕÙ»ØÂÊ: {overall_recall:.4f}")
-    print(f"F1·ÖÊı: {f1_score:.4f}")
+    print("\n===== æ€»ä½“ç»Ÿè®¡ =====")
+    print(f"æ€»çœŸå®æ¡†æ•°: {total_matched_gt}")
+    print(f"æ€»é¢„æµ‹æ¡†æ•°: {total_pred_all}")
+    print(f"æ€»æ­£ç¡®åŒ¹é…æ•°: {total_correct_all}")
+    print(f"ç²¾ç¡®ç‡: {overall_precision:.4f}")
+    print(f"å¬å›ç‡: {overall_recall:.4f}")
+    print(f"F1åˆ†æ•°: {f1_score:.4f}")
 
 if __name__ == "__main__":
-    # ÅäÖÃÂ·¾¶£¨Çë¸ù¾İÊµ¼ÊÇé¿öĞŞ¸Ä£©
-    gt_folder_path = "D:\\Remote Sensing\\gt_truth\\¹¤ÒµÓÃµØ"
-    pred_folder_path = r"D:\Remote Sensing\5880 results\home\yuling\test\test_result\250917GLM4.5v"
+    # é…ç½®è·¯å¾„ï¼ˆè¯·æ ¹æ®å®é™…æƒ…å†µä¿®æ”¹ï¼‰
+    gt_folder_path = ""
+    pred_folder_path = ""
     output_directory = "bbox_metrics_results"
     
-    # ÑéÖ¤Â·¾¶
+    # éªŒè¯è·¯å¾„
     if not os.path.exists(gt_folder_path):
-        print(f"ÕæÊµ±ê×¢ÎÄ¼ş¼Ğ²»´æÔÚ - {gt_folder_path}")
+        print(f"çœŸå®æ ‡æ³¨æ–‡ä»¶å¤¹ä¸å­˜åœ¨ - {gt_folder_path}")
     elif not os.path.exists(pred_folder_path):
-        print(f"Ô¤²â½á¹ûÎÄ¼ş¼Ğ²»´æÔÚ - {pred_folder_path}")
+        print(f"é¢„æµ‹ç»“æœæ–‡ä»¶å¤¹ä¸å­˜åœ¨ - {pred_folder_path}")
     else:
         main(
             gt_folder=gt_folder_path,
