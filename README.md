@@ -59,7 +59,7 @@ This RAG module adopts a front-end and back-end separated architecture powered b
 4. LISA analysis results: Spatial correlation reports, clustering distribution files and visualization data of environmental risks.
 
 ## ℹ️ Notes
-1. Raw remote sensing data is large-sized and not stored in this repository. Please download datasets from the provided Google Drive link.
+1. Raw remote sensing data is large-sized and not stored in this repository. Please download datasets from the provided Zenodo link.
 2. Neo4j can only run normally with Java 17 or Java 21 installed.
 3. LISA analysis relies on `pysal` and `geopandas`, please install relevant dependencies in advance.
 4. This project is developed based on open-source projects: [EVLab-CMCD](https://github.com/whudk/EVLab-CMCD) and [llm-graph-builder](https://github.com/neo4j-labs/llm-graph-builder). Please follow relevant open-source licenses when using the code.
