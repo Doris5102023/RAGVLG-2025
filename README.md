@@ -28,8 +28,8 @@ A modified RAG framework referenced from Neo4j llm-graph-builder, which is used 
 Stores final risk clustering results and spatial analysis files. It contains risk index tables, cluster statistics, risk level mapping files.
 
 ## 🗂️ Dataset
-All datasets (**RSIL**) used in this project are stored on Google Drive:
-> [Dataset for RAGVLG](https://drive.google.com/file/d/1xWmD-jSM9slh0f5ieuvOe0b46H4Onobz/view?usp=drive_link)
+All datasets (**RSIL**) used in this project are stored on Zenodo:
+> [Dataset for RAGVLG](https://zenodo.org/records/20659365))
 
 The package includes industrial land remote sensing patches and ground truth annotations.
 
