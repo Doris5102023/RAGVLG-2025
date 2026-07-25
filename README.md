@@ -29,7 +29,7 @@ Stores final risk clustering results and spatial analysis files. It contains ris
 
 ## 🗂️ Dataset
 All datasets (**RSIL**) used in this project are stored on Zenodo:
-> [Dataset for RAGVLG](https://zenodo.org/records/20659365))
+> [Dataset for RAGVLG](https://zenodo.org/records/20659365)
 
 The package includes industrial land remote sensing patches and ground truth annotations.
 
