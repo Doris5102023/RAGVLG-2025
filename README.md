@@ -21,7 +21,7 @@ A modified RAG framework referenced from Neo4j llm-graph-builder, which is used 
 - `lstndvi.py`: Calculate the average LST and NDVI values for each bounding box area.
 - `ass.py`: Complete environmental risk assessment for industrial land.
 - `kmeans.py`: Divide industrial lands into five risk levels using K-Means clustering algorithm.
-- `lisa_analysis.py`: Conduct LISA spatial correlation analysis on risk distribution.
+- `prepare_grid_risk.py, run_lisa_analysis.py`: Conduct LISA spatial correlation analysis on risk distribution.
 - `XXX_F1.py`: Calculate F1-score to evaluate the performance of visual grounding models.
 
 ### 📑 Clustering_results
